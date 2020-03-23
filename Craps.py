@@ -8,5 +8,12 @@ Created on Sun Mar 22 17:26:42 2020
 
 print('Bem vindo ao SUPER CRAPS DO ARANHA')
 
-banco = input('Quantas fichas você tem?')
+while 1:
+    try:
+        banco = int(input('Quantas fichas você tem?\n\n'))
+        break
+    except:
+        print('Um número inteiro, por favor...\n')
 
+while banco > 0:
+    print('∆ Está iniciado o Come Out ∆')
