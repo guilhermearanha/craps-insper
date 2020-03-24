@@ -5,6 +5,7 @@ Created on Sun Mar 22 17:26:42 2020
 
 @author: guilhermearanha
 """
+import random
 
 def inputInteiro():
     while 1:
@@ -15,7 +16,18 @@ def inputInteiro():
             print('?')
     return n
 
-
+def printDados():
+    texto = '\n'
+    for i in range(4, random.randint(5,10)):
+        texto += ' '
+    texto += '[' + str(dadoA) + ']'
+    if random.randint(0,1) == 1:
+        texto += '\n'
+    for i in range(4, random.randint(5,10)):
+        texto += ' '
+    texto += '[' + str(dadoB) + ']'
+    print(texto + '\n')
+    
 
 
 print('Bem vindo ao SUPER CRAPS DO ARANHA')
@@ -28,6 +40,10 @@ while 1:
         print('\nUm número inteiro, por favor...\n')
         
 fase = 1
+dadoA = 0
+dadoB = 0
+soma = 0
+somaplb = 0
 resposta = ''
 
 plb = 0
@@ -35,25 +51,44 @@ f = 0
 ac = 0
 t = 0
 
-while banco > 0:
+while 1:    #loop de fases
     
-    if fase == 1:   #inicio da fase come out
+    if fase == 1:   #inicio da fase específica
         print('\n∆ Está iniciado o Come Out ∆')
-        print('Gostaria de fazer alguma aposta? (s/n)')
+    if fase == 2:
+        print('\n∫ Está iniciado o Point ∫')
+    print('Gostaria de fazer alguma aposta? (s/n)')
+    
+    while 1:    #loop de apostas
+        while 1:    #quer ou nao fazer uma aposta
+            resposta = input('')
+            resposta = resposta.lower()
+            if resposta == 's' or resposta == 'n' or resposta == 'sim' or resposta == 'não':
+                break
+            else:
+                print('?')
         
-        while 1:    #loop de apostas
-            while 1:    #quer ou nao fazer uma aposta
-                resposta = input('')
-                resposta = resposta.lower()
-                if resposta == 's' or resposta == 'n' or resposta == 'sim' or resposta == 'não':
+        if resposta == 'n' or resposta == 'não':
+            if plb + f + ac + t == 0:
+                print('\nQuer mesmo sair do jogo? (s/n)')
+                while 1:    #quer sair ou não
+                    resposta = input('')
+                    resposta = resposta.lower()
+                    if resposta == 's' or resposta == 'n' or resposta == 'sim' or resposta == 'não':
+                        break
+                    else:
+                        print('?')
+                if resposta == 's' or resposta == 'sim':
+                    print('\nVocê saiu do jogo com ' + str(banco) + ' fichas')
                     break
                 else:
-                    print('?')
-            
-            if resposta == 'n' or resposta == 'não':
+                    print('\nGostaria de fazer alguma aposta? (s/n)')
+            else:
                 break
-        
-            if resposta == 's' or resposta == 'sim':    #se sim, qual aposta?
+    
+        if resposta == 's' or resposta == 'sim':    #se sim, qual aposta?
+            
+            if fase == 1:
                 print('\nQual? (Pass Line Bet(plb) / Field(f) / Any Craps(ac) / Twelve(t) / Não quero mais apostar(x))')
                 while 1:
                     resposta = input()
@@ -62,10 +97,18 @@ while banco > 0:
                         break
                     else:
                         print('?')
+            
+            if fase == 2:
+                print('\nQual? (Field(f) / Any Craps(ac) / Twelve(t) / Não quero mais apostar(x))')
+                while 1:
+                    resposta = input()
+                    resposta = resposta.lower()
+                    if resposta == 'field' or resposta == 'f' or resposta == 'any craps' or resposta == 'ac' or resposta == 'twelve' or resposta == 't' or resposta == 'x':
+                        break
+                    else:
+                        print('?')
                 
-                if resposta == 'x':
-                    break
-                        
+            if resposta != 'x':
                 print('\nQuanto você gostaria de apostar?')
                 while 1:
                     aposta = inputInteiro()
@@ -86,20 +129,94 @@ while banco > 0:
                 else:
                     print('Há algo de errado no programa')
                 
+                if plb + f + ac + t > 0:
+                    print('\n-------- Suas Aposta --------\n')
+                    if plb > 0:
+                        print(str(plb) + ' fichas no Pass Line Bat')
+                    if f > 0:
+                        print(str(f) + ' fichas no Fields')
+                    if ac > 0:
+                        print(str(ac) + ' fichas no Any Crap')
+                    if t > 0:
+                        print(str(t) + ' fichas no Twelve')
+                    print('\n-----------------------------')
+                
+                print('\nVocê tem ' + str(banco) + ' fichas')
                 print('\nGostaria de fazer mais alguma aposta? (s/n)')
+            else:
+                print('\nGostaria de fazer alguma aposta? (s/n)')
+    
+    if plb + f + ac + t == 0:
+        break
+    
+    print('\nOs dados serão lançados!')
+    
+    dadoA = random.randint(1,6)
+    dadoB = random.randint(1,6)
+    soma = dadoA + dadoB
+    
+    printDados()
+    
+    if plb > 0: #resultado do plb
+        if fase == 1:
+            if soma == 7 or soma == 11:
+                print('Você ganhou ' + str(plb) + ' fichas com a aposta no Pass Line Bat!')
+                banco += plb * 2
+                plb = 0
+            elif soma == 2 or soma == 3 or soma == 12:
+                print('Você perdeu suas ' + str(plb) + ' fichas apostadas no Pass Line Bat!')
+                plb = 0
+            elif soma == 4 or soma == 5 or soma == 6 or soma == 8 or soma == 9 or soma == 10:
+                print('Sua aposta de ' + str(plb) + ' fichas no Pass Line Bat vai para o Point!')
+                somaplb = soma
+                fase = 2
+        elif fase == 2:
+            if soma == somaplb:
+                print('Você ganhou ' + str(plb) + ' fichas com a aposta no Pass Line Bat!')
+                banco += plb * 2
+                plb = 0
+                fase = 1
+            elif soma == 7:
+                print('Você perdeu suas ' + str(plb) + ' fichas apostadas no Pass Line Bat!')
+                plb = 0
+                fase = 1
+            else:
+                print('Sua aposta de ' + str(plb) + ' fichas no Pass Line Bat continua no Point')
+    
+    if f > 0: #resultado do f
+        if soma == 3 or soma == 4 or soma == 9 or soma == 10 or soma == 11:
+            print('Você ganhou ' + str(f) + ' fichas com a aposta no Field!')
+            banco += f * 2
+        elif soma == 5 or soma == 6 or soma == 7 or soma == 8:
+            print('Você perdeu suas ' + str(f) + ' fichas apostadas no Field!')
+            banco += f * 2
+        elif soma == 2:
+            print('Você ganhou ' + str(f * 2) + ' fichas com a aposta no Field!')
+            banco += f * 3
+        elif soma == 12:
+            print('Você ganhou ' + str(f * 3) + ' fichas com a aposta no Field!')
+            banco += f * 4
+        f = 0
+    
+    if ac > 0:  #resultado do ac
+        if soma == 2 or soma == 3 or soma == 12:
+            print('Você ganhou ' + str(ac * 7) + ' fichas com a aposta no Any Craps!')
+            banco += ac * 8
+        else:
+            print('Você perdeu suas ' + str(ac) + ' fichas apostadas no Any Craps!')    
+        ac = 0
         
-        print(plb)
-        print(f)
-        print(ac)
-        print(t)
+    if t > 0:  #resultado do ac
+        if soma == 12:
+            print('Você ganhou ' + str(t * 30) + ' fichas com a aposta no Twelve!')
+            banco += t * 31
+        else:
+            print('Você perdeu suas ' + str(t) + ' fichas apostadas no Twelve!')    
+        t = 0
+    
+    print('Você tem ' + str(banco) + ' fichas')
+    if banco == 0:
+        print('E por isso você será expulso do SUPER CRAPS DO ARANHA')
 
-
-
-
-
-
-
-
-
-
-    break
+if banco == 0:
+    print('GAME OVER')
