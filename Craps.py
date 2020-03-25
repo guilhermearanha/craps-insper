@@ -7,7 +7,7 @@ Created on Sun Mar 22 17:26:42 2020
 """
 import random
 
-def inputInteiro():
+def inputInteiro(): #funcao para receber no input um numero inteiro
     while 1:
         try:
             n = int(input())
@@ -16,7 +16,7 @@ def inputInteiro():
             print('?')
     return n
 
-def printDados():
+def printDados():   #funcao para mostrar os dados aleatoriamente organizados
     texto = '\n'
     for i in range(4, random.randint(5,10)):
         texto += ' '
@@ -32,14 +32,14 @@ def printDados():
 
 print('Bem vindo ao SUPER CRAPS DO ARANHA')
 
-while 1:
+while 1:    #input quantas fichas vc tem
     try:
         banco = int(input('Quantas fichas você tem?\n'))
         break
     except:
         print('\nUm número inteiro, por favor...\n')
         
-fase = 1
+fase = 1    #declara todas as variaveis que seram usadas
 dadoA = 0
 dadoB = 0
 soma = 0
@@ -68,7 +68,7 @@ while 1:    #loop de fases
             else:
                 print('?')
         
-        if resposta == 'n' or resposta == 'não':
+        if resposta == 'n' or resposta == 'não':    #se a resposta for não, ou o jogo continua com as apostas ja feitas ou se não houverem apostas feitas ele pergunta se vc quer sair ou não
             if plb + f + ac + t == 0:
                 print('\nQuer mesmo sair do jogo? (s/n)')
                 while 1:    #quer sair ou não
@@ -88,7 +88,7 @@ while 1:    #loop de fases
     
         if resposta == 's' or resposta == 'sim':    #se sim, qual aposta?
             
-            if fase == 1:
+            if fase == 1:   #opcoes de aposta na fase come out
                 print('\nQual? (Pass Line Bet(plb) / Field(f) / Any Craps(ac) / Twelve(t) / Não quero mais apostar(x))')
                 while 1:
                     resposta = input()
@@ -98,7 +98,7 @@ while 1:    #loop de fases
                     else:
                         print('?')
             
-            if fase == 2:
+            if fase == 2:   #opcoes de aposta na fase point
                 print('\nQual? (Field(f) / Any Craps(ac) / Twelve(t) / Não quero mais apostar(x))')
                 while 1:
                     resposta = input()
@@ -108,7 +108,7 @@ while 1:    #loop de fases
                     else:
                         print('?')
                 
-            if resposta != 'x':
+            if resposta != 'x': #se a opcao for uma aposta, input de quanto vai ser apostado
                 print('\nQuanto você gostaria de apostar?')
                 while 1:
                     aposta = inputInteiro()
@@ -118,7 +118,7 @@ while 1:    #loop de fases
                         banco -= aposta
                         break
                 
-                if resposta == 'pass line bet' or resposta == 'plb':
+                if resposta == 'pass line bet' or resposta == 'plb':    #guarda a quantidade de fichas apostadas na variavel da aposta em que ela foi feita
                     plb += aposta
                 elif resposta == 'field' or resposta == 'f':
                     f += aposta
@@ -126,10 +126,8 @@ while 1:    #loop de fases
                     ac += aposta
                 elif resposta == 'twelve' or resposta == 't':
                     t += aposta
-                else:
-                    print('Há algo de errado no programa')
                 
-                if plb + f + ac + t > 0:
+                if plb + f + ac + t > 0:    #se vc tiver alguma aposta, mostrar as apostas que vc tem
                     print('\n-------- Suas Aposta --------\n')
                     if plb > 0:
                         print(str(plb) + ' fichas no Pass Line Bat')
@@ -141,15 +139,15 @@ while 1:    #loop de fases
                         print(str(t) + ' fichas no Twelve')
                     print('\n-----------------------------')
                 
-                print('\nVocê tem ' + str(banco) + ' fichas')
+                print('\nVocê tem ' + str(banco) + ' fichas')   #mostrar quantas fichas vc tem
                 print('\nGostaria de fazer mais alguma aposta? (s/n)')
             else:
                 print('\nGostaria de fazer alguma aposta? (s/n)')
     
-    if plb + f + ac + t == 0:
+    if plb + f + ac + t == 0:    #se nenhuma aposta tiver sido feita até sair do loop de apostas, o jogo se encerra
         break
     
-    print('\nOs dados serão lançados!')
+    print('\nOs dados serão lançados!') #lancamento dos dados
     
     dadoA = random.randint(1,6)
     dadoB = random.randint(1,6)
@@ -206,7 +204,7 @@ while 1:    #loop de fases
             print('Você perdeu suas ' + str(ac) + ' fichas apostadas no Any Craps!')    
         ac = 0
         
-    if t > 0:  #resultado do ac
+    if t > 0:  #resultado do t
         if soma == 12:
             print('Você ganhou ' + str(t * 30) + ' fichas com a aposta no Twelve!')
             banco += t * 31
@@ -214,9 +212,10 @@ while 1:    #loop de fases
             print('Você perdeu suas ' + str(t) + ' fichas apostadas no Twelve!')    
         t = 0
     
-    print('Você tem ' + str(banco) + ' fichas')
-    if banco == 0:
-        print('E por isso você será expulso do SUPER CRAPS DO ARANHA')
+    print('\nVocê tem ' + str(banco) + ' fichas') #mostra quantas fichas vc tem
+    if banco == 0 and plb == 0:
+        print('...e por isso você será expulso do SUPER CRAPS DO ARANHA')
+        break
 
 if banco == 0:
-    print('GAME OVER')
+    print('\n>>> GAME OVER <<<')
