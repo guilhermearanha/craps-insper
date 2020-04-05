@@ -11,7 +11,8 @@ def inputInteiro(): #funcao para receber no input um numero inteiro
     while 1:
         try:
             n = int(input())
-            break
+            if n >= 0:
+                break
         except:
             print('?')
     return n
@@ -35,9 +36,10 @@ print('Bem vindo ao SUPER CRAPS DO ARANHA')
 while 1:    #input quantas fichas vc tem
     try:
         banco = int(input('Quantas fichas você tem?\n'))
-        break
+        if banco > 0:
+            break
     except:
-        print('\nUm número inteiro, por favor...\n')
+        print('\nUm número inteiro positivo, por favor...\n')
         
 fase = 1    #declara todas as variaveis que seram usadas
 dadoA = 0
@@ -187,7 +189,6 @@ while 1:    #loop de fases
             banco += f * 2
         elif soma == 5 or soma == 6 or soma == 7 or soma == 8:
             print('Você perdeu suas ' + str(f) + ' fichas apostadas no Field!')
-            banco += f * 2
         elif soma == 2:
             print('Você ganhou ' + str(f * 2) + ' fichas com a aposta no Field!')
             banco += f * 3
